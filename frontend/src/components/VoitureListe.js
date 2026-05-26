@@ -9,7 +9,7 @@ const VoitureListe = () => {
 
     useEffect(() => {
         // On interroge notre backend Dockerisé sur le port 9090
-        axios.get("http://localhost:9090/api/voitures")
+        axios.get("http://127.0.0.1:63908/api/voitures")
             .then(response => {
                 // Spring Data Rest met les tableaux dans un objet _embedded
                 if (response.data._embedded && response.data._embedded.voitures) {

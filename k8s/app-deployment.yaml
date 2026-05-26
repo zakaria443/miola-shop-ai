@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: springboot-deployment
+spec:
+  replicas: 3 # On demande 3 réplicas comme souhaité par le prof
+  selector:
+    matchLabels:
+      app: springboot-app
+  template:
+    metadata:
+      labels:
+        app: springboot-app
+    spec:
+      containers:
+        - name: springboot-app
+          image: miola-backend:1.0
+          imagePullPolicy: Never # Utilise l'image locale compilée à l'étape 1
+          ports:
+            - containerPort: 8082
+          env:
+            - name: MYSQL_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: db-config
+                  key: MYSQL_HOST
+            - name: MYSQL_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: db-config
+                  key: MYSQL_PORT
+            - name: MYSQL_USER
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-secrets
+                  key: mysql-user
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-secrets
+                  key: mysql-password
+            - name: SPRING_AI_OLLAMA_BASE_URL
+              value: "http://host.minikube.internal:11434"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: springboot-service
+spec:
+  type: NodePort
+  ports:
+    - port: 8082
+      targetPort: 8082
+      nodePort: 30090 # Port fixe pour y accéder facilement
+  selector:
+    app: springboot-app

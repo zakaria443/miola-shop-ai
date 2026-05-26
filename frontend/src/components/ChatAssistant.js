@@ -15,7 +15,7 @@ const ChatAssistant = () => {
         setReponse('');
 
         // Appel à notre API Spring Boot sur le port 9090
-        axios.get(`http://localhost:9090/api/chat?message=${question}`)
+        axios.get(`http://127.0.0.1:63908/api/chat?message=${question}`)
             .then(res => {
                 setReponse(res.data);
                 setLoading(false);
