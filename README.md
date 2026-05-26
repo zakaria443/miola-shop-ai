@@ -37,3 +37,24 @@ L'interface s'ouvrira sur http://localhost:3000
 Cliquez sur l'onglet Assistant IA
 
 Demandez par exemple : "Je cherche une voiture économique et rouge." L'IA consultera la base de données Docker et vous répondra avec un argumentaire de vente basé sur le stock réel.
+
+## ☸ Déploiement avec Kubernetes (Minikube)
+
+En plus de Docker Compose, ce projet est configuré pour être déployé sur un cluster Kubernetes. Les manifestes se trouvent dans le dossier `k8s/`.
+
+### Commandes d'exécution pour l'évaluation :
+
+**1. Démarrer le cluster local :**
+`minikube start`
+
+**2. Déployer l'infrastructure (Base de données et Backend) :**
+Appliquez tous les manifestes d'un coup en pointant vers le dossier :
+`kubectl apply -f k8s/`
+
+**3. Vérifier que les pods sont en cours d'exécution :**
+`kubectl get pods`
+
+**4. Exposer l'application et récupérer l'URL d'accès :**
+`minikube service springboot-service --url`
+
+*Note : Utilisez l'URL générée par la commande précédente pour configurer l'appel API dans l'application React, puis lancez le frontend avec `npm start`.*
